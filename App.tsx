@@ -1,16 +1,16 @@
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { WindowState, AppID, OSConfig, IconPosition, PowerState, FileEntry } from './types';
-import { APP_METADATA, DEFAULT_WALLPAPER } from './constants';
-import { Window } from './components/Window';
-import { StartMenu } from './components/StartMenu';
-import { AIAssistant } from './apps/AIAssistant';
-import { Terminal } from './apps/Terminal';
-import { Paint } from './apps/Paint';
-import { TaskManager } from './apps/TaskManager';
-import { Explorer } from './apps/Explorer';
-import { AppStore } from './apps/AppStore';
-import { fsService } from './services/fsService';
+import React, { useState, useEffect, useCallback } from 'react';
+import { WindowState, AppID, OSConfig, PowerState, FileEntry } from './types.ts';
+import { APP_METADATA, DEFAULT_WALLPAPER } from './constants.tsx';
+import { Window } from './components/Window.tsx';
+import { StartMenu } from './components/StartMenu.tsx';
+import { AIAssistant } from './apps/AIAssistant.tsx';
+import { Terminal } from './apps/Terminal.tsx';
+import { Paint } from './apps/Paint.tsx';
+import { TaskManager } from './apps/TaskManager.tsx';
+import { Explorer } from './apps/Explorer.tsx';
+import { AppStore } from './apps/AppStore.tsx';
+import { fsService } from './services/fsService.ts';
 
 const CONFIG_KEY = 'cerium_os_config';
 
@@ -75,7 +75,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, onClose, onAction, opti
       style={{ left: x, top: y }}
       onClick={e => e.stopPropagation()}
     >
-      {defaultOptions.map((opt, i) => (
+      {defaultOptions.map((opt) => (
         <React.Fragment key={opt}>
           {['delete', 'properties', 'paste'].includes(opt) && <div className="h-[1px] bg-white/5 my-1" />}
           <button 
@@ -123,7 +123,7 @@ const App: React.FC = () => {
     const files = fsService.getFiles();
     const ceriumFolder = files.find(f => f.id === 'cerium');
     if (!ceriumFolder) {
-      setSystemError("CRITICAL_SYSTEM_ERROR: Cerium folder is missing. System integrity failure.");
+      setSystemError("CRITICAL_SYSTEM_ERROR: Cerium folder is missing. System UI and icons have been disabled.");
     } else {
       setSystemError(null);
     }
