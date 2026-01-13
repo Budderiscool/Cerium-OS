@@ -1,10 +1,8 @@
-
 import { GoogleGenAI } from "@google/genai";
 
 const getAI = () => {
-  if (!process.env.API_KEY) {
-    throw new Error("API Key is not configured.");
-  }
+  // Fix: Directly use process.env.API_KEY as per SDK guidelines.
+  // The key is assumed to be pre-configured in the environment.
   return new GoogleGenAI({ apiKey: process.env.API_KEY });
 };
 
@@ -16,8 +14,9 @@ export const askGemini = async (prompt: string, context?: string) => {
     You can help users with code, writing, or OS-related questions.
     The current context is: ${context || 'None'}.`;
 
+    // Fix: Upgrade to gemini-3-pro-preview for advanced reasoning and coding assistance.
     const response = await ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
+      model: 'gemini-3-pro-preview',
       contents: prompt,
       config: {
         systemInstruction,
@@ -25,6 +24,7 @@ export const askGemini = async (prompt: string, context?: string) => {
       },
     });
 
+    // Fix: Access the .text property directly (not a method).
     return response.text;
   } catch (error) {
     console.error("Gemini Error:", error);

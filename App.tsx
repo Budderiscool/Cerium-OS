@@ -103,8 +103,12 @@ const App: React.FC = () => {
   const [desktopFiles, setDesktopFiles] = useState<FileEntry[]>([]);
   
   const [config, setConfig] = useState<OSConfig>(() => {
-    const saved = localStorage.getItem(CONFIG_KEY);
-    if (saved) return JSON.parse(saved);
+    try {
+      const saved = localStorage.getItem(CONFIG_KEY);
+      if (saved) return JSON.parse(saved);
+    } catch (e) {
+      console.error("OS Config Corrupted, loading defaults");
+    }
     return {
       wallpaper: DEFAULT_WALLPAPER,
       theme: 'dark',
@@ -173,6 +177,8 @@ const App: React.FC = () => {
     }
 
     const meta = APP_METADATA[appId];
+    if (!meta) return;
+
     const newWindow: WindowState = {
       id: Math.random().toString(36).substr(2, 9),
       appId,

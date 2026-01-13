@@ -1,5 +1,5 @@
 
-import { FileEntry } from '../types';
+import { FileEntry } from '../types.ts';
 
 const FS_KEY = 'cerium_os_fs';
 
@@ -56,12 +56,20 @@ const INITIAL_FS: FileEntry[] = [
 
 export const fsService = {
   getFiles: (): FileEntry[] => {
-    const data = localStorage.getItem(FS_KEY);
-    if (!data) {
+    try {
+      const data = localStorage.getItem(FS_KEY);
+      if (!data || data === "undefined") {
+        localStorage.setItem(FS_KEY, JSON.stringify(INITIAL_FS));
+        return INITIAL_FS;
+      }
+      const parsed = JSON.parse(data);
+      if (!Array.isArray(parsed)) throw new Error("FS is not an array");
+      return parsed;
+    } catch (e) {
+      console.error("Cerium VFS Error: Disk corrupted, resetting to defaults.", e);
       localStorage.setItem(FS_KEY, JSON.stringify(INITIAL_FS));
       return INITIAL_FS;
     }
-    return JSON.parse(data);
   },
 
   getFilesByParent: (parentId: string | null): FileEntry[] => {
