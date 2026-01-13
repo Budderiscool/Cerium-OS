@@ -1,0 +1,8 @@
+{
+  "name": "CeriumOS - AI Desktop Environment",
+  "description": "A high-performance, highly customizable web-based operating system featuring a virtual file system, terminal, text editor, and Gemini AI integration.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
